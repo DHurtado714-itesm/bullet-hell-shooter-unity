@@ -50,6 +50,5 @@ public class BulletSpawner : MonoBehaviour
     private void ChangePattern()
     {
         currentPattern = (BulletPattern)(((int)currentPattern + 1) % System.Enum.GetValues(typeof(BulletPattern)).Length);
-        Debug.Log("Current Fire Pattern: " + currentPattern);
     }
 }

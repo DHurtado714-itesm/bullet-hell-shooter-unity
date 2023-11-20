@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    // Start is called before the first frame update
     public float bulletLife = 1f;
     public float rotation = 0f;
     public float speed = 1f;
@@ -12,6 +11,7 @@ public class Bullet : MonoBehaviour
 
     private Vector3 spawnPoint;
     private float timer = 0f;
+    private bool isCurrentlyVisible = false;
 
     void Start()
     {
@@ -21,7 +21,15 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (timer > bulletLife) Destroy(gameObject);
+        if (timer > bulletLife) 
+        {
+            if (isCurrentlyVisible)
+            {
+                BulletCounter.Instance.RemoveVisibleBullet(this);
+            }
+            Destroy(gameObject);
+        }
+
         timer += Time.deltaTime;
 
         switch (pattern)
@@ -40,15 +48,26 @@ public class Bullet : MonoBehaviour
                 break;
         }
 
-        if (IsVisibleFrom(Camera.main))
+        UpdateVisibility();
+    }
+
+    private void UpdateVisibility()
+    {
+        bool isVisible = IsVisibleFrom(Camera.main);
+        if (BulletCounter.Instance != null)
         {
-            // La bala está visible en la cámara principal
-            BulletCounter.Instance.AddVisibleBullet(this);
-        }
-        else
-        {
-            // La bala no está visible en la cámara principal
-            BulletCounter.Instance.RemoveVisibleBullet(this);
+            if (isVisible && !isCurrentlyVisible)
+            {
+                // La bala acaba de volverse visible
+                BulletCounter.Instance.AddVisibleBullet(this);
+                isCurrentlyVisible = true;
+            }
+            else if (!isVisible && isCurrentlyVisible)
+            {
+                // La bala acaba de volverse no visible
+                BulletCounter.Instance.RemoveVisibleBullet(this);
+                isCurrentlyVisible = false;
+            }
         }
     }
 

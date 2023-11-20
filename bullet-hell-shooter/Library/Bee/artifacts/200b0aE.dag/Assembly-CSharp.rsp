@@ -368,6 +368,7 @@
 "Assets/Brick Project Studio/_BPS Basic Assets/Common/Scripts and Animations/Windows/opencloseWindow1.cs"
 "Assets/Scripts/BullerSpawner.cs"
 "Assets/Scripts/Bullet.cs"
+"Assets/Scripts/BulletCountDisplay.cs"
 "Assets/Scripts/BulletCounter.cs"
 -langversion:9.0
 
